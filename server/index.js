@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 const faker = require("faker");
 const SpellDao = require("./data/SpellDao");
@@ -22,7 +22,7 @@ for (let i = 0; i < NUM_SAMPLES; i++) {
 }
 
 app.get("/", (req, res) => {
-    res.send("QuickNote API!");
+    res.send("The Mystical Magical Spells API");
 });
 
 app.listen(port, () => {
