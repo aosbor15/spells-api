@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 // TODO replace <password> with the password for quicknote-admin
-const URI = 'mongodb+srv://admin:qwe12345@dungeon-master.dark0ej.mongodb.net/?retryWrites=true&w=majority';
+const URI = process.env.DB_URI;
 
 async function connect() {
   try {
