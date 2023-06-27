@@ -1,18 +1,17 @@
-const { v4: uuidv4 } = require("uuid");
+import mongoose from "mongoose";
 
-class Spell {
-    constructor(level, name, type, castTime, range, components, duration, description, source) {
-        this._id = uuidv4();
-        this.level = level;
-        this.name = name;
-        this.type = type;
-        this.castTime = castTime;
-        this.range = range;
-        this.components = components;
-        this.duration = duration;
-        this.description = description;
-        this.source = source;
-    }
-}
+const SpellSchema = new mongoose.Schema({
+    level: { type: String, required: true  },
+    name: { type: String, required: true  },
+    type: { type: String, required: true  },
+    castTime: { type: String, required: true  },
+    range: { type: String, required: true  },
+    components: { type: String, required: true  },
+    duration: { type: String, required: true  },
+    description: { type: String, required: true  },
+    source: { type: String, required: true  }
+});
 
-module.exports = Spell;
+const Spell = mongoose.model("Spell", SpellSchema);
+
+export default Spell;

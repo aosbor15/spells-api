@@ -1,5 +1,5 @@
-const Spell = require("../model/Spell");
-const ApiError = require("../model/ApiError");
+import Spell from "../model/Spell.js";
+import ApiError from "../model/ApiError.js";
 
 class SpellDao {
 
@@ -8,52 +8,42 @@ class SpellDao {
     }
 
     async create ({ level, name, type, castTime, range, components, duration, description, source }) {
-        const spell = new Spell(level, name, type, castTime, range, components, duration, description, source);
-        this.spells.push(spell);
+        const spell = await Spell.create({level, name, type, castTime, range, components, duration, description, source});
         return spell;
     }
 
     async update (id, { level, name, type, castTime, range, components, duration, description, source }) {
-        const index = this.spells.findIndex((spell) => spell._id === id);
+        const spell = await Spell.findByIdAndUpdate(id, { level, name, type, castTime, range, components, duration, description, source }, { new: true, runValidators: true });
 
-        if (index === -1) {
+        if (spell === null) {
             throw new ApiError(404, "There is no spell with the given ID!");
         }
 
-        // Add code for updating fields
-        if (level !== undefined) {
-            this.spells[index].level = level;
-        }
-        if (name !== undefined) {
-            this.spells[index].name = name;
-        }
-
-        return this.spells[index];
+        return spell;
     }
 
     async delete (id) {
-        const index = this.spells.findIndex((spell) => spell._id === id);
+        const spell = await Spell.findByIdAndDelete(id);
 
-        if (index === -1) {
+        if (spell === null) {
             throw new ApiError(404, "There is no spell with the given ID!");
         }
-        const spell = this.spells[index];
-        this.spells.splice(index, 1);
         return spell;
     }
 
     async read (id) {
-        return this.spells.find((spell) => spell._id === id);
+        const spell = await Spell.findById(id);
+        return spell ? spell: [];
     }
 
     async readAll (query = "") {
         if (query !== "") {
-            return this.spells.filter(
-                (spell) => spell.name.includes(query)
-            );
+            const spells = await Spell.find().or([{ name: query }, { description: query }]);
+            return spells;
         }
-        return this.spells;
+        const spells = await Spell.find({});
+        return spells;
     }
 }
 
-module.exports = SpellDao;
+export default SpellDao;

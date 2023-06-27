@@ -1,25 +1,12 @@
-const express = require("express");
+import express from 'express';
 const app = express();
 const port = process.env.PORT || 3000;
+import connect from './data/db.js';
+import SpellDao from './data/SpellDao.js';
 
-const faker = require("faker");
-const SpellDao = require("./data/SpellDao");
-
-const NUM_SAMPLES = 3;
 const spells = new SpellDao();
-for (let i = 0; i < NUM_SAMPLES; i++) {
-    spells.create({
-        level: faker.lorem.sentence(),
-        name: faker.lorem.sentence(),
-        type: faker.lorem.sentence(),
-        castTime: faker.lorem.sentence(),
-        range: faker.lorem.sentence(),
-        components: faker.lorem.sentence(),
-        duration: faker.lorem.sentence(),
-        description: faker.lorem.paragraph(),
-        source: faker.lorem.sentence(),
-    });
-}
+
+await connect();
 
 app.get("/", (req, res) => {
     res.send("The Mystical Magical Spells API");
